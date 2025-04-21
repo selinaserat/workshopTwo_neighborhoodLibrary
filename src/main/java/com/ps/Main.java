@@ -5,9 +5,8 @@ import java.util.Scanner;
 public class Main {
     static Scanner scanner = new Scanner(System.in);
 
-
     public static void displayHomeScreen() {
-        System.out.println("Home Screen");
+        System.out.println("HOME SCREEN");
         System.out.println("1: Show Available Books");
         System.out.println("2: Show Checked Out Books");
         System.out.println("0: Exit");
@@ -54,75 +53,103 @@ public class Main {
         books[18] = new Book(19, "978-0063031326", "Daughter of the Moon Goddess", true, "Olsi");
         books[19] = new Book(20, "978-0062891501", "Kingdom of the Cursed", false, "");
 
-
+        System.out.println("Welcome to the Neighborhood Library!\n");
         displayHomeScreen();
         int menuGivenCommand = scanner.nextInt();
         System.out.println("You have selected: " + menuGivenCommand);
+        System.out.println();
 
         if (menuGivenCommand == 1) {
+            System.out.println("AVAILABLE BOOKS");
             showAvailableBooks(books);
 
-            System.out.println("1: select book to check out");
+            System.out.println("\n1: select book to check out");
             System.out.println("2: exit to home screen");
             System.out.print("Select one of the options: ");
             int availableBooksGivenCommand = scanner.nextInt();
+            System.out.println();
 
-            System.out.println("You have selected: " + availableBooksGivenCommand);
 
             if (availableBooksGivenCommand == 1) {
                 System.out.print("Please enter the ID of the book you'd like to check out: ");
                 int bookIdToCheckOut = scanner.nextInt();
+                scanner.nextLine();
                 int BookIndexToCheckOut = bookIdToCheckOut - 1;
 
                 System.out.print("Please enter your first name: ");
                 String userName = scanner.nextLine();
 
+                boolean bookToCheckOutFound = false;
                 for (int i = 0; i < books.length; i++) {
                     if (!books[BookIndexToCheckOut].isCheckedOut() && books[i].getId() == bookIdToCheckOut) {
                         books[i].setCheckedOut(true);
                         books[i].setCheckedOutTo(userName);
                         System.out.println("You have checked out: " + books[i].getTitle());
-                    } else {
-                        System.out.println("This ID does not match any of the books");
+                        bookToCheckOutFound = true;
+                        break;
                     }
                 }
-            } else {
+                if (!bookToCheckOutFound){
+                    System.out.println("This ID does not match any of the books");
+                }
+            }
+            else if (availableBooksGivenCommand == 2){
                 System.out.println("You have selected to go back to home screen");
+            }
+            else {
+                System.out.println("invalid command");
             }
         }
 
+
             else if (menuGivenCommand == 2) {
+                System.out.println("CHECKED OUT BOOKS");
+
                 showCheckedOutBooks(books);
-                System.out.println("1: check in a book");
+                System.out.println("\n1: check in a book");
                 System.out.println("2: exit to home screen");
                 System.out.print("Select one of the options: ");
                 int checkedOutBooksCommand = scanner.nextInt();
 
-                System.out.println("You have selected: " + checkedOutBooksCommand);
+                System.out.println();
+
 
                 if(checkedOutBooksCommand == 1){
 
                     System.out.print("Please enter the ID of the book you'd like to check in: ");
                     int bookIdToCheckIn = scanner.nextInt();
-                    scanner.nextLine();
-
                     int bookIndexToCheckIn = bookIdToCheckIn - 1;
 
+                    boolean bookToCheckInFound = false;
                     for (int i = 0; i < books.length; i++) {
                         if (books[bookIndexToCheckIn].isCheckedOut() && books[i].getId() == bookIdToCheckIn) {
                             books[i].setCheckedOut(false);
                             books[i].setCheckedOutTo("");
                             System.out.println("You have checked in: " + books[i].getTitle());
-                        }
-                        else {
-                            System.out.println("This ID does not match any of the books");
+                            bookToCheckInFound =true;
+                            break;
                         }
                     }
+                    if (!bookToCheckInFound){
+                        System.out.println("This ID does not match any of the books");
+                    }
+
                 }
 
-                else{
+                else if (checkedOutBooksCommand == 2){
                     System.out.println("You have selected to go back to home screen");
                 }
+                else {
+                    System.out.println("invalid command");
+                }
             }
+
+            else if(menuGivenCommand == 0){
+            System.out.println("Thank you for visiting the Neighborhood Library!\nGoodbye");
+        }
+
+            else{
+            System.out.println("invalid selection \nPlease try again\n");
+        }
     }
 }
